@@ -54,7 +54,7 @@
 	            data: jsonData,
 	            success: function(response) {
 	                if (response === "success") {
-	                    window.location.href = "/Search";
+	                    window.location.href = "./Search";
 	                } 
 	            },
 	            error: function(error) {

@@ -1,0 +1,24 @@
+:root {
+	--background: #ccffff;
+}
+
+body {
+	background-color: var(--background);
+}
+
+.edit-container__content--error {
+	display: flex;
+	justify-content: center;
+}
+
+.main-edit__cotainer {
+	display: flex;
+	justify-content: center;
+}
+
+.edit-context__minWith label {
+	min-width: 200px;
+}
+
+
+
