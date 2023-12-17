@@ -62,7 +62,7 @@
 					<textarea id="txaAddress" name="address">${editResponse.address}</textarea>
 				</div>
 				<div class="edit-container__btnContent">
-					<button type="button" id="btn-save" class="edit-container__btnContent-Save">Save</button>
+					<button type="button" id="btn-save" onclick="saveCustomer()" class="edit-container__btnContent-Save">Save</button>
 					<button type="button"  id="btnClearEdit" onclick="clearForm()" class="edit-container__btnContent-Clear">Clear</button>
 				</div>
 			</div>
@@ -71,7 +71,34 @@
 	</div>
 	<script>
 		function saveCustomer() {
-			
+			var customerId = +($("#lblCustomerID").text());
+			var name = $("#txtCustomerName").val();
+		    var sex = $("#cboSex").val();
+		    var birthDay = $("#txtCustomerBirthday").val();
+		    var email = $("#txtCustomerEmail").val();
+		    var address = $("#txaAddress").val();
+		    
+		    $.ajax({
+		    	type: "POST",
+		    	url: window.location.origin + "/Customer/edit", 
+		    	data: {
+		    		customerId: customerId,
+		    		customerName: name,
+		            sex: sex,
+		            birthDay: birthDay,
+		            email: email,
+		            address: address
+		    	},
+		    	success: function(response) {
+		    		if (response === 'success') {
+		    			window.location.href = "/Customer/Search";
+		    		}
+		    		
+		        },
+		        error: function(error) {
+		            console.error("Error searching: " + error.responseText);
+		        }
+		    })
 		}
 	</script>
 </body>

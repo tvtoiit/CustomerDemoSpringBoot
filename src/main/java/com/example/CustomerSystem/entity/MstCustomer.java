@@ -1,6 +1,5 @@
 package com.example.CustomerSystem.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -44,21 +43,21 @@ public class MstCustomer {
     private Date insertYmd;
 
     @Column(name = "INSERT_PSN_CD", columnDefinition = "numeric(5,0)")
-    private Date insertPsnCd;
+    private Integer insertPsnCd;
 
     @Column(name = "UPDATE_YMD", updatable = false, insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateYmd;
 
     @Column(name = "UPDATE_PSN_CD", columnDefinition = "numeric(5,0)")
-    private BigDecimal updatePsnCd;
+    private Integer updatePsnCd;
 
     public MstCustomer() {
     	super();
     }
     
 	public MstCustomer(int customerId, String customerName, String sex, String birthDay, String email, String address,
-			Date deleteYmd, Date insertYmd, Date insertPsnCd, Date updateYmd, BigDecimal updatePsnCd) {
+			Date deleteYmd, Date insertYmd, Integer insertPsnCd, Date updateYmd, Integer updatePsnCd) {
 		super();
 		this.customerId = customerId;
 		this.customerName = customerName;
@@ -137,11 +136,11 @@ public class MstCustomer {
 		this.insertYmd = insertYmd;
 	}
 
-	public Date getInsertPsnCd() {
+	public Integer getInsertPsnCd() {
 		return insertPsnCd;
 	}
 
-	public void setInsertPsnCd(Date insertPsnCd) {
+	public void setInsertPsnCd(Integer insertPsnCd) {
 		this.insertPsnCd = insertPsnCd;
 	}
 
@@ -153,11 +152,11 @@ public class MstCustomer {
 		this.updateYmd = updateYmd;
 	}
 
-	public BigDecimal getUpdatePsnCd() {
+	public Integer getUpdatePsnCd() {
 		return updatePsnCd;
 	}
 
-	public void setUpdatePsnCd(BigDecimal updatePsnCd) {
+	public void setUpdatePsnCd(Integer updatePsnCd) {
 		this.updatePsnCd = updatePsnCd;
 	}
 }

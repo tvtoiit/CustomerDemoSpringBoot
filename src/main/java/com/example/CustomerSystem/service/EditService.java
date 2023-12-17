@@ -39,8 +39,10 @@ public class EditService {
         customerRepository.save(newCustomer);
 	}
 	
+	
 	private MstCustomer convertToMstCustomer(EditForm editForm) {
         MstCustomer newCustomer = new MstCustomer();
+        newCustomer.setCustomerId(editForm.getCustomerId());
         newCustomer.setCustomerName(editForm.getCustomerName());
         newCustomer.setSex(editForm.getSex());
         newCustomer.setBirthDay(editForm.getBirthDay());

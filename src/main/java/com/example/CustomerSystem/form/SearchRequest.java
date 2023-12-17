@@ -1,6 +1,6 @@
 package com.example.CustomerSystem.form;
 
-public class SearchForm {
+public class SearchRequest {
 	private String name;
 	private String sex;
 	private String birthdayFrom;

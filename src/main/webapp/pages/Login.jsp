@@ -17,6 +17,7 @@
 						 
 					</div>
 				</div>
+				<form id="loginForm">
 				<div class="content-login__container">
 					<div class="form-group">
 						<label for="fullname" class="form-label form-label__userID">User
@@ -32,26 +33,18 @@
 						<button type="button" id="btnClear" class="form-submit">Clear</button>
 					</div>
 				</div>
+				</form>
 		</div>
 	</div>
 	<script>
 	$(document).ready(function() {
 	    $("#btnLogin").click(function() {
-	        var userId = $("#txtUserID").val();
-	        var password = $("#txtPassword").val();
-
-	        // Chuyển đối tượng JavaScript thành chuỗi JSON
-	        var jsonData = JSON.stringify({
-	            userId: userId,
-	            passWord: password
-	        });
-
+	    	var formData = $("#loginForm").serialize();
 	        // Gửi dữ liệu bằng AJAX
 	        $.ajax({
 	            type: "POST",
 	            url: "./login",
-	            contentType: "application/json", // Đặt kiểu nội dung là JSON
-	            data: jsonData,
+	            data: formData,
 	            success: function(response) {
 	                if (response === "success") {
 	                    window.location.href = "./Search";

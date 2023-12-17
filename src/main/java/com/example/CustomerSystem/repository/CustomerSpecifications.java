@@ -9,12 +9,18 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import com.example.CustomerSystem.entity.MstCustomer;
+import com.example.CustomerSystem.form.SearchRequest;
 
 @Component
 public class CustomerSpecifications {
 
-    public static Specification<MstCustomer> searchCustomers(String name, String sex, String birthdayFrom, String birthdayTo) {
-        return new Specification<MstCustomer>() {
+    public static Specification<MstCustomer> searchCustomers(SearchRequest searchRequest) {
+        String name = searchRequest.getName();
+        String sex = searchRequest.getSex();
+        String birthdayFrom = searchRequest.getBirthdayFrom();
+        String birthdayTo = searchRequest.getBirthdayTo();
+    	
+    	return new Specification<MstCustomer>() {
 
 			private static final long serialVersionUID = 1L;
 

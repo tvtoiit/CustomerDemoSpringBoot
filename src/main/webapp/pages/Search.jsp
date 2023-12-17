@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,13 +41,9 @@
 				</div>
 				<div class="search-container__handalSearch--margin handalSearch-BirthdayFrom">
 					<div class="handalSearch-customercommon handalSearch-BirthdayFrom__text">Birthday</div>
-					
-						<input id="txtBirthdayForm" class ="input_Customer--common txtCustomerValidateFROM" name ="txtBirthdayFromName" maxLength ="10" value=""/>
-					
+					<input id="txtBirthdayForm" class ="input_Customer--common txtCustomerValidateFROM" name ="txtBirthdayFromName" maxLength ="10" value=""/>
 					<label for="html" class="handalSearch-customercommon handalSearch-BirthdayFrom__ngangcach">～</label>
-					
-						<input id="txtBirthdayTo" class="input_Customer--common txtCustomerValidateTO" name ="txtBirthdayToName" maxLength ="10" value=""/>	
-					
+					<input id="txtBirthdayTo" class="input_Customer--common txtCustomerValidateTO" name ="txtBirthdayToName" maxLength ="10" value=""/>		
 				</div>
 				<div class="handalSearch-btnSearch">
 					<button type="button" onclick="searchCustomers()" id="btnSearch">Search</button>
@@ -57,11 +52,8 @@
 			<div class="search-container__btnContext--chuyenhuong">
 			<input type="hidden" id="pagePagination" value=""/>	
 		    <div class="search-container__btnContext--start">
-
-
 		    	<button name="pageAction" value="first">&lt;&lt;</button>
 	     		<button name="pageAction" value="previous">&lt;</button>
-
 		        <label for="html" class="search-container__btnContext--textstart">Previous</label>
 		    </div>
 		    <div class="search-container__btnContext--end">
@@ -83,7 +75,8 @@
 	        </tr>
 	        </thead>
 	        <tbody>
-	       <c:forEach var="customer" items="${searchResult}">
+	       <c:forEach var="customer" items="${searchResult.dataSearch}">
+	       <h1>123</h1>
                 <tr>
                  	<td>
 			            <input type="checkbox" id="selecValueCheckBox" value="${customer.customerId}">
@@ -102,7 +95,6 @@
 			<button type="button" onclick="deleteSelectedCustomers()" class ="search-container__nav-btnAdd">Delete</button>
 			<a href="./Import.do" class="btn-import__class">Import</a>
 		</div>
-
 	</div>
 </div>
 
@@ -128,9 +120,9 @@ function searchCustomers() {
             birthdayTo: birthdayTo
         },
         success: function(response) {
-        	console.log(response);
-        	updateTable(response)
-        	//updateTable(data)
+        	document.open();
+        	document.write(response);
+        	document.close();
         },
         error: function(error) {
             console.error("Error searching: " + error.responseText);

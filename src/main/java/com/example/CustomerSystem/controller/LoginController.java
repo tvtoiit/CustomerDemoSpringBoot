@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -27,7 +28,7 @@ public class LoginController {
 	}
 	
 	 @PostMapping("/login")
-	    public ResponseEntity<String> login(@Valid @RequestBody LoginForm form) {
+	    public ResponseEntity<String> login(@ModelAttribute LoginForm form) {
 	        MstUser result = loginService.getUser(form.getUserId(), form.getPassWord());
 	        if (result != null) {
 	            return ResponseEntity.ok("success");

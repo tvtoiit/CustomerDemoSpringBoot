@@ -1,9 +1,5 @@
 package com.example.CustomerSystem.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,8 +8,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.CustomerSystem.entity.MstCustomer;
-import com.example.CustomerSystem.form.SearchForm;
-import com.example.CustomerSystem.form.SearchRespone;
+import com.example.CustomerSystem.form.SearchRequest;
+import com.example.CustomerSystem.form.SearchResponse;
 import com.example.CustomerSystem.repository.CustomerRepository;
 import com.example.CustomerSystem.repository.CustomerSpecifications;
 
@@ -23,50 +19,29 @@ public class SearchService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public List<SearchRespone> searchCustomers(String name, String sex, String birthdayFrom, String birthdayTo, int page, int size) {
-        Specification<MstCustomer> spec = CustomerSpecifications.searchCustomers(name, sex, birthdayFrom, birthdayTo);
+    public SearchResponse searchCustomers(SearchRequest searchRequest, int page, int size) {
+        Specification<MstCustomer> spec = CustomerSpecifications.searchCustomers(searchRequest);
 
         // Use PageRequest from org.springframework.data.domain
         Pageable pageable = PageRequest.of(page, size);
         
         Page<MstCustomer> pageCustomer = customerRepository.findAll(spec, pageable);
-        if (pageCustomer.isEmpty()) {
-        	return Collections.emptyList();
-        }
         
-        List<SearchRespone> searchResponseList  = new ArrayList<>();
-        for (MstCustomer mstCustomer : pageCustomer) {
-            SearchRespone searchResponse = convertToSearchResponse(mstCustomer, page);
-            searchResponseList.add(searchResponse);
+        SearchResponse responseSearch = new SearchResponse();
+        if (!pageCustomer.isEmpty()) {
+        	responseSearch.setDataSearch(pageCustomer.getContent());
         }
-        return searchResponseList;
+ 
+        return responseSearch;
     }
     
-    private SearchRespone convertToSearchResponse(MstCustomer mstCustomer, int page) {
-        // Logic to convert MstCustomer to SearchRespone
-        // For example:
-        SearchRespone searchResponse = new SearchRespone();
-        searchResponse.setCustomerId(mstCustomer.getCustomerId());
-        searchResponse.setCustomerName(mstCustomer.getCustomerName());
-        searchResponse.setSex(mstCustomer.getSex());
-        searchResponse.setBirthDay(mstCustomer.getBirthDay());
-        searchResponse.setAddress(mstCustomer.getAddress());
-        searchResponse.setPage(String.valueOf(page));
-        // Set other properties
-        return searchResponse;
-    }
     
-    private int countSearchCustomers(SearchForm searchForm) {
-    	String name = searchForm.getName();
-        String sex = searchForm.getSex();
-        String birthdayFrom = searchForm.getBirthdayFrom();
-        String birthdayTo = searchForm.getBirthdayTo();
-        
-        Specification<MstCustomer> spec = CustomerSpecifications.searchCustomers(name, sex, birthdayFrom, birthdayTo);
+    private int countSearchCustomers(SearchRequest searchRequest) {
+        Specification<MstCustomer> spec = CustomerSpecifications.searchCustomers(searchRequest);
         return (int) customerRepository.count(spec);
     }
     
-    public int countPage(SearchForm searchForm) {
+    private int countPage(SearchRequest searchForm) {
     	int countPageCustomer = countSearchCustomers(searchForm);
     	int countPage = countPageCustomer / 10;
     	
@@ -74,6 +49,15 @@ public class SearchService {
     		countPage++;
     	}
     	return countPage;
+    }
+    
+    public SearchResponse handleSearch(SearchRequest searchRequest) {
+    	int page = 0;
+    	int size = 15;
+    	SearchResponse searchResponse = searchCustomers(searchRequest, page, size);
+    	
+    	
+    	return searchResponse;
     }
 }
 
