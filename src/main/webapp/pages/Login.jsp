@@ -49,8 +49,10 @@
 	                if (response === "success") {
 	                    window.location.href = "./Search";
 	                } 
+	                console.log(response);
 	            },
 	            error: function(error) {
+	            	console.log(error);
 	                var errorMessage = "";
 	                if (error != null && error.responseJSON && error.responseJSON.errors) {
 	                    errorMessage = error.responseJSON.errors[0].defaultMessage;

@@ -5,11 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Search Training</title>
 <style type="text/css">
 	<%@include file="../WEB-INF/css/T002.css" %>
 </style>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 </head>
 <body>
 	<div class="search-container">
@@ -26,29 +27,31 @@
 				</a>
 			</div>
 			<div class="search-container__line"></div>
-			<div class="search-container__handalSearch">
-				<div class="search-container__handalSearch--margin handalSearch-customerName">
-					<div class="handalSearch-customercommon handalSearch-customerName__text">Customer Name</div>
-					<input id="txtCustomerName" class="input_Customer--common" name="txtCustomerName" maxLength = "50" value=""/>
+			<form id="searchForm">
+				<div class="search-container__handalSearch">
+					<div class="search-container__handalSearch--margin handalSearch-customerName">
+						<div class="handalSearch-customercommon handalSearch-customerName__text">Customer Name</div>
+						<input id="txtCustomerName" class="input_Customer--common" name="txtCustomerName" maxLength = "50" value="${searchResult.name }"/>
+					</div>
+					<div class="search-container__handalSearch--margin handalSearch-customerSex">
+						<div class="handalSearch-customercommon handalSearch-customerSex__text">Sex</div>
+						<select name="sex" class="input_Customer--select" id="cboSex">
+						    <option value="">blank</option>
+						    <option value="0" ${searchResult.sex == "0" ? 'selected' : ''}>Male</option>
+							<option value="1" ${searchResult.sex == "1" ? 'selected' : ''}>Female</option>
+						</select>
+					</div>
+					<div class="search-container__handalSearch--margin handalSearch-BirthdayFrom">
+						<div class="handalSearch-customercommon handalSearch-BirthdayFrom__text">Birthday</div>
+						<input id="txtBirthdayForm" class ="input_Customer--common txtCustomerValidateFROM" name ="txtBirthdayFromName" maxLength ="10" value="${searchResult.birthDayFrom}"/>
+						<label for="html" class="handalSearch-customercommon handalSearch-BirthdayFrom__ngangcach">～</label>
+						<input id="txtBirthdayTo" class="input_Customer--common txtCustomerValidateTO" name ="txtBirthdayToName" maxLength ="10" value="${searchResult.birthDayTo}"/>		
+					</div>
+					<div class="handalSearch-btnSearch">
+						<button type="button" onclick="searchCustomers()" id="btnSearch">Search</button>
+					</div>
 				</div>
-				<div class="search-container__handalSearch--margin handalSearch-customerSex">
-					<div class="handalSearch-customercommon handalSearch-customerSex__text">Sex</div>
-					<select name="sex" class="input_Customer--select" id="cboSex">
-					    <option value="">blank</option>
-					    <option value="0">Male</option>
-					    <option value="1">Female</option>
-					</select>
-				</div>
-				<div class="search-container__handalSearch--margin handalSearch-BirthdayFrom">
-					<div class="handalSearch-customercommon handalSearch-BirthdayFrom__text">Birthday</div>
-					<input id="txtBirthdayForm" class ="input_Customer--common txtCustomerValidateFROM" name ="txtBirthdayFromName" maxLength ="10" value=""/>
-					<label for="html" class="handalSearch-customercommon handalSearch-BirthdayFrom__ngangcach">～</label>
-					<input id="txtBirthdayTo" class="input_Customer--common txtCustomerValidateTO" name ="txtBirthdayToName" maxLength ="10" value=""/>		
-				</div>
-				<div class="handalSearch-btnSearch">
-					<button type="button" onclick="searchCustomers()" id="btnSearch">Search</button>
-				</div>
-			</div>
+			</form>
 			<div class="search-container__btnContext--chuyenhuong">
 			<input type="hidden" id="pagePagination" value=""/>	
 		    <div class="search-container__btnContext--start">
@@ -75,12 +78,9 @@
 	        </tr>
 	        </thead>
 	        <tbody>
-	       <c:forEach var="customer" items="${searchResult.dataSearch}">
-	       <h1>123</h1>
+	       	<c:forEach var="customer" items="${searchResult.dataSearch}">
                 <tr>
-                 	<td>
-			            <input type="checkbox" id="selecValueCheckBox" value="${customer.customerId}">
-			        </td>
+                 	<td><input type="checkbox" id="selecValueCheckBox" value="${customer.customerId}"></td>
                     <td><a href="./edit/${customer.customerId}">${customer.customerId}</a></td>
                     <td>${customer.customerName}</td>
                     <td>${customer.sex == 0 ? 'Male' : 'Female'}</td>
@@ -97,143 +97,6 @@
 		</div>
 	</div>
 </div>
-
-<script>
-function rediEdit() {
-	 window.location.href = "./edit";
-}
-
-function searchCustomers() {
-    // Get input values
-    var name = $("#txtCustomerName").val();
-    var sex = $("#cboSex").val();
-    var birthdayFrom = $("#txtBirthdayForm").val();
-    var birthdayTo = $("#txtBirthdayTo").val();
-    
-    $.ajax({
-        type: "POST",
-        url: "./Search",
-        data: {
-            name: name,
-            sex: sex,
-            birthdayFrom: birthdayFrom,
-            birthdayTo: birthdayTo
-        },
-        success: function(response) {
-        	document.open();
-        	document.write(response);
-        	document.close();
-        },
-        error: function(error) {
-            console.error("Error searching: " + error.responseText);
-        }
-    });
-}
-
-function lastPagination() {
-	var name = $("#txtCustomerName").val();
-    var sex = $("#cboSex").val();
-    var birthdayFrom = $("#txtBirthdayForm").val();
-    var birthdayTo = $("#txtBirthdayTo").val();
-    var pagePagination = $("#pagePagination").val();
-    
-    $.ajax({
-    	type: "POST",
-    	url: "./Search",
-    	data: {
-    		name: name,
-            sex: sex,
-            birthdayFrom: birthdayFrom,
-            birthdayTo: birthdayTo,
-            page: pagePagination,
-            sMode: "last",
-            statusBtn: true
-    	},
-    	success: function(response) {
-    		console.log(response);
-        	updateTable(response);
-        },
-        error: function(error) {
-            console.error("Error searching: " + error.responseText);
-        }
-    })
-    
-}
-
-function nextPagination() {
-	var name = $("#txtCustomerName").val();
-    var sex = $("#cboSex").val();
-    var birthdayFrom = $("#txtBirthdayForm").val();
-    var birthdayTo = $("#txtBirthdayTo").val();
-    var pagePagination = $("#pagePagination").val();
-}
-
-function updateTable(data) {
-    var table = $("#sortableTable");
-    var tableBody = table.find('tbody');
-    var tableHeader = table.find('thead');
-
-    // Update table header
-    var headerRow = tableHeader.find('#header');
-    headerRow.empty();
-    headerRow.append("<th><input type='checkbox' id='checkAll' name='checkboxAll' value='' onclick='toggleAllCheckboxes()'></th>");
-    headerRow.append("<th>Customer ID</th>");
-    headerRow.append("<th>Customer Name</th>");
-    headerRow.append("<th>Sex</th>");
-    headerRow.append("<th>Birthday</th>");
-    headerRow.append("<th>Address</th>");
-
-    // Update table body
-    tableBody.empty(); // Clear existing rows
-
-    // Add new rows based on the data
-    $.each(data, function(index, customer) {
-        var row = $("<tr>");
-        row.append("<td><input type='checkbox' id='selecValueCheckBox' value='" + customer.customerId + "'></td>");
-        row.append("<td><a href='./edit/${customer.customerId}'>" + customer.customerId + "</a></td>");
-        row.append("<td>" + customer.customerName + "</td>");
-        row.append("<td>" + (customer.sex == 0 ? 'Male' : 'Female') + "</td>");
-        row.append("<td>" + customer.birthDay + "</td>");
-        row.append("<td>" + customer.address + "</td>");
-
-        tableBody.append(row);
-        $("#pagePagination").val(customer.page);
-        
-        if (customer.statusBtn === true) {
-        	$("button[name='pageAction']").prop("disabled", true);
-        } else {
-        	$("button[name='pageAction']").prop("disabled", false);
-        }
-    });
-}
-
-
-function deleteSelectedCustomers() {
-	var selectedValues = [];
-	
-	$("input[type=checkbox]:checked").each(function() {
-        selectedValues.push($(this).val());
-        
-    });
-    if (selectedValues.length === 0) {
-        alert("Chưa chọn customer");
-        return;
-    }
-	
-    $.ajax({
-        type: "POST",
-        url: "./Delete",
-        data: JSON.stringify({ selectedValues: selectedValues }),
-        contentType: "application/json",
-        success: function(response) {
-            window.location.href = "./Search";
-        },
-        error: function(error) {
-            console.error("Lỗi xóa: " + error.responseText);
-        }
-    });
-}
-
-</script>
+<script src="./src/js/Search.js"></script>
 </body>
 </html>

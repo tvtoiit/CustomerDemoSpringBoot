@@ -1,11 +1,17 @@
 package com.example.CustomerSystem.form;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import com.example.CustomerSystem.Validate.DateRangeValdate;
+
+@DateRangeValdate
 public class SearchRequest {
 	private String name;
 	private String sex;
 	private String birthdayFrom;
 	private String birthdayTo;
-	private String page;
+	private int page;
 	private String sMode;
 	private String[] selectedValues;
 
@@ -49,11 +55,11 @@ public class SearchRequest {
 		this.birthdayTo = birthdayTo;
 	}
 
-	public String getPage() {
+	public int getPage() {
 		return page;
 	}
 
-	public void setPage(String page) {
+	public void setPage(int page) {
 		this.page = page;
 	}
 
@@ -64,4 +70,24 @@ public class SearchRequest {
 	public void setsMode(String sMode) {
 		this.sMode = sMode;
 	}
+	
+	public boolean isDateRangeValid() {
+        if (birthdayFrom == null || birthdayTo == null) {
+            return true; 
+        }
+
+        try {
+            LocalDate from = LocalDate.parse(birthdayFrom, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+            LocalDate to = LocalDate.parse(birthdayTo, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+
+            // Kiểm tra nếu birthdayFrom > birthdayTo
+            if (from.isAfter(to)) {
+                return false;
+            }
+
+            return true;
+        } catch (Exception e) {
+            return false; // Bỏ qua nếu có lỗi chuyển đổi
+        }
+    }
 }

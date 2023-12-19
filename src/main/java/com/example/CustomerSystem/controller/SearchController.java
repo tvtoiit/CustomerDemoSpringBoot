@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import com.example.CustomerSystem.service.SearchService;
 
 @Controller
 @RequestMapping("/Search")
+@Validated
 public class SearchController {
 
     @Autowired
@@ -25,9 +27,7 @@ public class SearchController {
     public ModelAndView handleSearch(@Valid @ModelAttribute SearchRequest searchRequest, Model model) {	
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("Search");
-    	int page = 0;
-        int size = 15;
-    	SearchResponse searchResult = searchService.searchCustomers(searchRequest, page, size);
+    	SearchResponse searchResult = searchService.handleSearch(searchRequest);
     	modelAndView.addObject("searchResult", searchResult);
         return modelAndView;
     }

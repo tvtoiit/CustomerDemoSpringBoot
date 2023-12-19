@@ -31,10 +31,13 @@ public class SearchService {
         if (!pageCustomer.isEmpty()) {
         	responseSearch.setDataSearch(pageCustomer.getContent());
         }
- 
+        responseSearch.setPage(page);
+        responseSearch.setName(searchRequest.getName());
+        responseSearch.setSex(searchRequest.getSex());
+        responseSearch.setBirthDayFrom(searchRequest.getBirthdayFrom());
+        responseSearch.setBirthDayTo(searchRequest.getBirthdayTo());
         return responseSearch;
     }
-    
     
     private int countSearchCustomers(SearchRequest searchRequest) {
         Specification<MstCustomer> spec = CustomerSpecifications.searchCustomers(searchRequest);
@@ -52,10 +55,9 @@ public class SearchService {
     }
     
     public SearchResponse handleSearch(SearchRequest searchRequest) {
-    	int page = 0;
+    	int page = searchRequest.getPage();
     	int size = 15;
     	SearchResponse searchResponse = searchCustomers(searchRequest, page, size);
-    	
     	
     	return searchResponse;
     }
