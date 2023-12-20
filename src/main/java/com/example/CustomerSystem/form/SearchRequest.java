@@ -1,11 +1,8 @@
 package com.example.CustomerSystem.form;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 import com.example.CustomerSystem.Validate.DateRangeValdate;
 
-@DateRangeValdate
+@DateRangeValdate(groups = SearchRequest.class)
 public class SearchRequest {
 	private String name;
 	private String sex;
@@ -70,24 +67,4 @@ public class SearchRequest {
 	public void setsMode(String sMode) {
 		this.sMode = sMode;
 	}
-	
-	public boolean isDateRangeValid() {
-        if (birthdayFrom == null || birthdayTo == null) {
-            return true; 
-        }
-
-        try {
-            LocalDate from = LocalDate.parse(birthdayFrom, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-            LocalDate to = LocalDate.parse(birthdayTo, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-
-            // Kiểm tra nếu birthdayFrom > birthdayTo
-            if (from.isAfter(to)) {
-                return false;
-            }
-
-            return true;
-        } catch (Exception e) {
-            return false; // Bỏ qua nếu có lỗi chuyển đổi
-        }
-    }
 }

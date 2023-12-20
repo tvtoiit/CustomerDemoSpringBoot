@@ -12,7 +12,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
 @Constraint(validatedBy = DateRangeValidator.class)
-@Target({TYPE})
+@Target({ TYPE })
 @Retention(RUNTIME)
 public @interface DateRangeValdate {
     String message() default "Invalid date range";

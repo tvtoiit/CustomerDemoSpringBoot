@@ -14,56 +14,59 @@ import com.example.CustomerSystem.form.SearchRequest;
 @Component
 public class CustomerSpecifications {
 
-	public static Specification<MstCustomer> searchCustomers(SearchRequest searchRequest) {
-		String name = searchRequest.getName();
-		String sex = searchRequest.getSex();
-		String birthdayFrom = searchRequest.getBirthdayFrom();
-		String birthdayTo = searchRequest.getBirthdayTo();
+    public static Specification<MstCustomer> searchCustomers(SearchRequest searchRequest) {
+        String name = searchRequest.getName();
+        String sex = searchRequest.getSex();
+        String birthdayFrom = searchRequest.getBirthdayFrom();
+        String birthdayTo = searchRequest.getBirthdayTo();
 
-		return new Specification<MstCustomer>() {
+        return new Specification<MstCustomer>() {
 
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Predicate toPredicate(Root<MstCustomer> root, CriteriaQuery<?> query,
-					CriteriaBuilder criteriaBuilder) {
-				query.distinct(true);
+            @Override
+            public Predicate toPredicate(Root<MstCustomer> root, CriteriaQuery<?> query,
+                    CriteriaBuilder criteriaBuilder) {
+                query.distinct(true);
 
-				// Base condition: DELETE_YMD IS NULL
-				Predicate predicate = criteriaBuilder.isNull(root.get("deleteYmd"));
+                // Base condition: DELETE_YMD IS NULL
+                Predicate predicate = criteriaBuilder.isNull(root.get("deleteYmd"));
 
-				if (name != null && !name.isEmpty()) {
-	                if ("%".equals(name)) {
-	                    // Nếu giá trị tìm kiếm là '%', thì chỉ hiển thị những bản ghi có chứa dấu '%'
-	                    predicate = criteriaBuilder.and(
-	                        predicate,
-	                        criteriaBuilder.like(root.get("customerName"), "%")
-	                    );
-	                } else {
-	                    // Trường hợp name không chứa '%', sử dụng Criteria API
-	                    predicate = criteriaBuilder.and(
-	                        predicate,
-	                        criteriaBuilder.like(root.get("customerName"), "%" + name + "%")
-	                    );
-	                }
-	            }
+                if (name != null && !name.isEmpty()) {
+                    if ("%".equals(name)) {
+                        // Nếu giá trị tìm kiếm là '%', thì chỉ hiển thị những bản ghi có chứa dấu '%'
+                        predicate = criteriaBuilder.and(
+                            predicate,
+                            criteriaBuilder.gt(
+                                criteriaBuilder.locate(root.get("customerName"), criteriaBuilder.literal("")),
+                                0
+                            )
+                        );
+                    } else {
+                        // Trường hợp name không chứa '%', sử dụng Hibernate Restrictions
+                        predicate = criteriaBuilder.and(
+                            predicate,
+                            criteriaBuilder.like(root.get("customerName"), "%" + name + "%")
+                        );
+                    }
+                }
 
-				if (sex != null && !sex.isEmpty()) {
-					predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("sex"), sex));
-				}
+                if (sex != null && !sex.isEmpty()) {
+                    predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("sex"), sex));
+                }
 
-				if (birthdayFrom != null && !birthdayFrom.isEmpty()) {
-					predicate = criteriaBuilder.and(predicate,
-							criteriaBuilder.greaterThanOrEqualTo(root.get("birthDay"), birthdayFrom));
-				}
+                if (birthdayFrom != null && !birthdayFrom.isEmpty()) {
+                    predicate = criteriaBuilder.and(predicate,
+                            criteriaBuilder.greaterThanOrEqualTo(root.get("birthDay"), birthdayFrom));
+                }
 
-				if (birthdayTo != null && !birthdayTo.isEmpty()) {
-					predicate = criteriaBuilder.and(predicate,
-							criteriaBuilder.lessThanOrEqualTo(root.get("birthDay"), birthdayTo));
-				}
+                if (birthdayTo != null && !birthdayTo.isEmpty()) {
+                    predicate = criteriaBuilder.and(predicate,
+                            criteriaBuilder.lessThanOrEqualTo(root.get("birthDay"), birthdayTo));
+                }
 
-				return predicate;
-			}
-		};
-	}
+                return predicate;
+            }
+        };
+    }
 }

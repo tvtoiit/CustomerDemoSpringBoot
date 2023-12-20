@@ -1,5 +1,7 @@
 package com.example.CustomerSystem.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,7 +33,7 @@ public class EditController {
 	}
 	
 	@PostMapping("/edit")
-	public ResponseEntity<String> edit(@ModelAttribute EditForm editForm) {
+	public ResponseEntity<String> edit(@Valid @ModelAttribute EditForm editForm) {
         editService.addCustomer(editForm);
 		return ResponseEntity.ok("success");
 	}

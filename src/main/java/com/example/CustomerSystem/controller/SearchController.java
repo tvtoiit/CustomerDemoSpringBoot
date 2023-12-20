@@ -24,7 +24,7 @@ public class SearchController {
     private SearchService searchService;
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
 
-    public ModelAndView handleSearch(@Valid @ModelAttribute SearchRequest searchRequest, Model model) {	
+    public ModelAndView handleSearch(@ModelAttribute SearchRequest searchRequest, Model model) {	
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("Search");
     	SearchResponse searchResult = searchService.handleSearch(searchRequest);

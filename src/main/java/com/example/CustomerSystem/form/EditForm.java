@@ -1,19 +1,15 @@
 package com.example.CustomerSystem.form;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.validation.annotation.Validated;
+import com.example.CustomerSystem.Validate.DateRangeValdate;
 
-@Validated
+@DateRangeValdate(groups = EditForm.class)
 public class EditForm {
 	private int customerId;
 	private String customerName;
 	private String sex;
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Invalid date format. Please use yyyy-MM-dd")
 	private String birthDay;
 	
 	@Email(message = "Invalid email format")
