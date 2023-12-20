@@ -4,7 +4,7 @@ import javax.validation.constraints.Email;
 
 import com.example.CustomerSystem.Validate.DateRangeValdate;
 
-@DateRangeValdate(groups = EditForm.class)
+@DateRangeValdate
 public class EditForm {
 	private int customerId;
 	private String customerName;

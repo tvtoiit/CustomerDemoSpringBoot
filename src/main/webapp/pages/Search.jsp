@@ -93,7 +93,7 @@
 		<div class="search-container__btnnav">
 			<button  class="btn-import__class search-container__nav-btnAdd" onclick="rediEdit()">Add New</button>
 			<button type="button" onclick="deleteSelectedCustomers()" class ="search-container__nav-btnAdd">Delete</button>
-			<a href="./Import.do" class="btn-import__class">Import</a>
+			<a href="./import" class="btn-import__class">Import</a>
 		</div>
 	</div>
 </div>

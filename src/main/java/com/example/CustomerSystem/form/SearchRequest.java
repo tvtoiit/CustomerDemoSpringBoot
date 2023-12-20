@@ -2,7 +2,7 @@ package com.example.CustomerSystem.form;
 
 import com.example.CustomerSystem.Validate.DateRangeValdate;
 
-@DateRangeValdate(groups = SearchRequest.class)
+@DateRangeValdate
 public class SearchRequest {
 	private String name;
 	private String sex;

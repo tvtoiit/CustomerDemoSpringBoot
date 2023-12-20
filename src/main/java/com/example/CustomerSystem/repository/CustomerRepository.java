@@ -18,4 +18,7 @@ public interface CustomerRepository extends JpaRepository<MstCustomer, Integer>,
     void softDeleteByIds(@Param("ids") List<Integer> ids);
     
     MstCustomer findByCustomerId(int customerId);
+    
+    @Query("SELECT u FROM MstCustomer u WHERE u.deleteYmd IS NULL")
+    List<MstCustomer> findAllActiveCustomers();
 }

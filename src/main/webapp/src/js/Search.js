@@ -2,6 +2,10 @@ function rediEdit() {
 	 window.location.href = "./edit";
 }
 
+function rediImport() {
+	 window.location.href = "./import";
+}
+
 function searchCustomers() {
     // Get input values
     var name = $("#txtCustomerName").val();
